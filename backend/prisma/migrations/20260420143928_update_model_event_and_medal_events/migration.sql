@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Event" ADD COLUMN     "baseXp" INTEGER NOT NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "EventMedal" ADD COLUMN     "baseXp" INTEGER NOT NULL DEFAULT 0;

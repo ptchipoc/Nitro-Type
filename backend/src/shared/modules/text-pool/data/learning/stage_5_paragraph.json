@@ -1,0 +1,23 @@
+[
+  {
+    "id": "l5-1",
+    "text": "const result = items.map(x => x.id);",
+    "wordCount": 7
+  },
+  {
+    "id": "l5-2",
+    "text": "function sum(a, b) { return a + b; }",
+    "wordCount": 9
+  },
+  { "id": "l5-3", "text": "if (score >= 95) { advance(); }", "wordCount": 6 },
+  {
+    "id": "l5-4",
+    "text": "export default class TypingService {}",
+    "wordCount": 5
+  },
+  {
+    "id": "l5-5",
+    "text": "console.log(`Accuracy: ${accuracy}%`);",
+    "wordCount": 5
+  }
+]

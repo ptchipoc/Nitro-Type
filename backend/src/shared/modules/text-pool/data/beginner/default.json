@@ -1,0 +1,52 @@
+[
+  {
+    "id": "beginner-001",
+    "text": "the cat sat on the mat and looked at the sun",
+    "wordCount": 10
+  },
+  {
+    "id": "beginner-002",
+    "text": "i like to read books and play games with my friends",
+    "wordCount": 10
+  },
+  {
+    "id": "beginner-003",
+    "text": "the sky is blue and the clouds are white and soft",
+    "wordCount": 10
+  },
+  {
+    "id": "beginner-004",
+    "text": "she walked to the store to buy some milk and bread",
+    "wordCount": 11
+  },
+  {
+    "id": "beginner-005",
+    "text": "the dog ran fast across the green field near the house",
+    "wordCount": 11
+  },
+  {
+    "id": "beginner-006",
+    "text": "we had fun playing in the park after school today",
+    "wordCount": 10
+  },
+  {
+    "id": "beginner-007",
+    "text": "he ate breakfast early and then went to work with his brother",
+    "wordCount": 11
+  },
+  {
+    "id": "beginner-008",
+    "text": "the flower grew tall in the warm garden behind our home",
+    "wordCount": 11
+  },
+  {
+    "id": "beginner-009",
+    "text": "i am happy to see you and your family this weekend",
+    "wordCount": 11
+  },
+  {
+    "id": "beginner-010",
+    "text": "the bird sang a sweet song while sitting on the old tree",
+    "wordCount": 11
+  }
+]

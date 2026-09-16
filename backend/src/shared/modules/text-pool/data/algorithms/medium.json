@@ -1,0 +1,52 @@
+[
+  {
+    "id": "algo-med-001",
+    "text": "int\tbinary_search(int *arr, int len, int target)\n{\n\tint\tlo = 0;\n\tint\thi = len - 1;\n\n\twhile (lo <= hi)\n\t{\n\t\tint\tmid = lo + (hi - lo) / 2;\n\t\tif (arr[mid] == target)\n\t\t\treturn (mid);\n\t\tif (arr[mid] < target)\n\t\t\tlo = mid + 1;\n\t\telse\n\t\t\thi = mid - 1;\n\t}\n\treturn (-1);\n}",
+    "wordCount": 46
+  },
+  {
+    "id": "algo-med-002",
+    "text": "void\tselection_sort(int *arr, int len)\n{\n\tfor (int i = 0; i < len - 1; i++)\n\t{\n\t\tint\tmin = i;\n\t\tfor (int j = i + 1; j < len; j++)\n\t\t{\n\t\t\tif (arr[j] < arr[min])\n\t\t\t\tmin = j;\n\t\t}\n\t\tif (min != i)\n\t\t{\n\t\t\tint\tt = arr[i];\n\t\t\tarr[i] = arr[min];\n\t\t\tarr[min] = t;\n\t\t}\n\t}\n}",
+    "wordCount": 49
+  },
+  {
+    "id": "algo-med-003",
+    "text": "t_list\t*reverse_list(t_list *head)\n{\n\tt_list\t*prev = NULL;\n\tt_list\t*curr = head;\n\tt_list\t*next = NULL;\n\n\twhile (curr)\n\t{\n\t\tnext = curr->next;\n\t\tcurr->next = prev;\n\t\tprev = curr;\n\t\tcurr = next;\n\t}\n\treturn (prev);\n}",
+    "wordCount": 33
+  },
+  {
+    "id": "algo-med-004",
+    "text": "int\tpartition(int *arr, int lo, int hi)\n{\n\tint\tpivot = arr[hi];\n\tint\ti = lo - 1;\n\n\tfor (int j = lo; j < hi; j++)\n\t{\n\t\tif (arr[j] < pivot)\n\t\t{\n\t\t\ti++;\n\t\t\tint\tt = arr[i];\n\t\t\tarr[i] = arr[j];\n\t\t\tarr[j] = t;\n\t\t}\n\t}\n\tint\tt = arr[i + 1];\n\tarr[i + 1] = arr[hi];\n\tarr[hi] = t;\n\treturn (i + 1);\n}",
+    "wordCount": 55
+  },
+  {
+    "id": "algo-med-005",
+    "text": "void\tmerge(int *arr, int l, int m, int r)\n{\n\tint\tn1 = m - l + 1;\n\tint\tn2 = r - m;\n\tint\tL[n1];\n\tint\tR[n2];\n\n\tfor (int i = 0; i < n1; i++)\n\t\tL[i] = arr[l + i];\n\tfor (int j = 0; j < n2; j++)\n\t\tR[j] = arr[m + 1 + j];\n\tint\ti = 0, j = 0, k = l;\n\twhile (i < n1 && j < n2)\n\t\tarr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];\n\twhile (i < n1)\n\t\tarr[k++] = L[i++];\n\twhile (j < n2)\n\t\tarr[k++] = R[j++];\n}",
+    "wordCount": 85
+  },
+  {
+    "id": "algo-med-006",
+    "text": "int\tmax_subarray(int *arr, int len)\n{\n\tint\tmax_so_far = arr[0];\n\tint\tmax_ending_here = arr[0];\n\n\tfor (int i = 1; i < len; i++)\n\t{\n\t\tmax_ending_here = (arr[i] > max_ending_here + arr[i]) ? arr[i] : max_ending_here + arr[i];\n\t\tif (max_so_far < max_ending_here)\n\t\t\tmax_so_far = max_ending_here;\n\t}\n\treturn (max_so_far);\n}",
+    "wordCount": 51
+  },
+  {
+    "id": "algo-med-007",
+    "text": "int\tclimbing_stairs(int n)\n{\n\tif (n <= 2)\n\t\treturn (n);\n\tint\tfirst = 1;\n\tint\tsecond = 2;\n\tfor (int i = 3; i <= n; i++)\n\t{\n\t\tint\tthird = first + second;\n\t\tfirst = second;\n\t\tsecond = third;\n\t}\n\treturn (second);\n}",
+    "wordCount": 35
+  },
+  {
+    "id": "algo-med-008",
+    "text": "unsigned int\tft_strlcat(char *dest, char *src, unsigned int size)\n{\n\tunsigned int\ti = 0;\n\tunsigned int\tj = 0;\n\tunsigned int\tdlen = 0;\n\n\twhile (dest[dlen] && dlen < size)\n\t\tdlen++;\n\twhile (src[j])\n\t\tj++;\n\tif (size <= dlen)\n\t\treturn (size + j);\n\twhile (src[i] && (dlen + i) < (size - 1))\n\t{\n\t\tdest[dlen + i] = src[i];\n\t\ti++;\n\t}\n\tdest[dlen + i] = '\\0';\n\treturn (dlen + j);\n}",
+    "wordCount": 65
+  },
+  {
+    "id": "algo-med-009",
+    "text": "int\tft_atoi(char *str)\n{\n\tint\tres = 0;\n\tint\tsign = 1;\n\n\twhile (*str == ' ' || (*str >= 9 && *str <= 13))\n\t\tstr++;\n\tif (*str == '-' || *str == '+')\n\t{\n\t\tif (*str++ == '-')\n\t\t\tsign = -1;\n\t}\n\twhile (*str >= '0' && *str <= '9')\n\t\tres = res * 10 + (*str++ - '0');\n\treturn (res * sign);\n}",
+    "wordCount": 55
+  },
+  {
+    "id": "algo-med-010",
+    "text": "char\t*ft_strnstr(char *haystack, char *needle, size_t len)\n{\n\tsize_t\tnlen = strlen(needle);\n\tif (!nlen)\n\t\treturn (haystack);\n\tfor (size_t i = 0; i + nlen <= len && haystack[i]; i++)\n\t{\n\t\tif (strncmp(&haystack[i], needle, nlen) == 0)\n\t\t\treturn (&haystack[i]);\n\t}\n\treturn (NULL);\n}",
+    "wordCount": 43
+  }
+]

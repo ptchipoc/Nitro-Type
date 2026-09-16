@@ -1,0 +1,52 @@
+[
+  {
+    "id": "algo-hard-001",
+    "text": "void\tdijkstra(t_graph *g, int start)\n{\n\tint\tdist[g->n];\n\tint\tvisited[g->n];\n\n\tfor (int i = 0; i < g->n; i++)\n\t{\n\t\tdist[i] = INT_MAX;\n\t\tvisited[i] = 0;\n\t}\n\tdist[start] = 0;\n\tfor (int count = 0; count < g->n - 1; count++)\n\t{\n\t\tint u = min_distance(dist, visited, g->n);\n\t\tvisited[u] = 1;\n\t\tfor (int v = 0; v < g->n; v++)\n\t\t{\n\t\t\tif (!visited[v] && g->adj[u][v] && dist[u] != INT_MAX && dist[u] + g->adj[u][v] < dist[v])\n\t\t\t\tdist[v] = dist[u] + g->adj[u][v];\n\t\t}\n\t}\n}",
+    "wordCount": 94
+  },
+  {
+    "id": "algo-hard-002",
+    "text": "void\tdfs(int grid[R][C], int r, int c, int visited[R][C])\n{\n\tif (r < 0 || c < 0 || r >= R || c >= C || grid[r][c] == 0 || visited[r][c])\n\t\treturn ;\n\tvisited[r][c] = 1;\n\tdfs(grid, r + 1, c, visited);\n\tdfs(grid, r - 1, c, visited);\n\tdfs(grid, r, c + 1, visited);\n\tdfs(grid, r, c - 1, visited);\n}",
+    "wordCount": 59
+  },
+  {
+    "id": "algo-hard-003",
+    "text": "void\tflood_fill(int screen[M][N], int x, int y, int prevC, int newC)\n{\n\tif (x < 0 || x >= M || y < 0 || y >= N || screen[x][y] != prevC)\n\t\treturn ;\n\tscreen[x][y] = newC;\n\tflood_fill(screen, x + 1, y, prevC, newC);\n\tflood_fill(screen, x - 1, y, prevC, newC);\n\tflood_fill(screen, x, y + 1, prevC, newC);\n\tflood_fill(screen, x, y - 1, prevC, newC);\n}",
+    "wordCount": 66
+  },
+  {
+    "id": "algo-hard-004",
+    "text": "t_node\t*insert_avl(t_node *node, int key)\n{\n\tif (!node)\n\t\treturn (new_node(key));\n\tif (key < node->key)\n\t\tnode->left = insert_avl(node->left, key);\n\telse if (key > node->key)\n\t\tnode->right = insert_avl(node->right, key);\n\telse\n\t\treturn (node);\n\tnode->height = 1 + max(height(node->left), height(node->right));\n\tint balance = get_balance(node);\n\tif (balance > 1 && key < node->left->key)\n\t\treturn (right_rotate(node));\n\tif (balance < -1 && key > node->right->key)\n\t\treturn (left_rotate(node));\n\treturn (node);\n}",
+    "wordCount": 85
+  },
+  {
+    "id": "algo-hard-005",
+    "text": "void\tkmp_search(char *pat, char *txt)\n{\n\tint m = strlen(pat);\n\tint n = strlen(txt);\n\tint lps[m];\n\n\tcompute_lps(pat, m, lps);\n\tint i = 0, j = 0;\n\twhile (i < n)\n\t{\n\t\tif (pat[j] == txt[i])\n\t\t{\n\t\t\ti++;\n\t\t\tj++;\n\t\t}\n\t\tif (j == m)\n\t\t{\n\t\t\tprintf(\"Found pattern at %d\", i - j);\n\t\t\tj = lps[j - 1];\n\t\t}\n\t\telse if (i < n && pat[j] != txt[i])\n\t\t{\n\t\t\tif (j != 0)\n\t\t\t\tj = lps[j - 1];\n\t\t\telse\n\t\t\t\ti++;\n\t\t}\n\t}\n}",
+    "wordCount": 84
+  },
+  {
+    "id": "algo-hard-006",
+    "text": "void\tquick_sort(int *arr, int lo, int hi)\n{\n\tif (lo < hi)\n\t{\n\t\tint pi = partition(arr, lo, hi);\n\t\tquick_sort(arr, lo, pi - 1);\n\t\tquick_sort(arr, pi + 1, hi);\n\t}\n}",
+    "wordCount": 31
+  },
+  {
+    "id": "algo-hard-007",
+    "text": "void\tmerge_sort(int *arr, int l, int r)\n{\n\tif (l < r)\n\t{\n\t\tint m = l + (r - l) / 2;\n\t\tmerge_sort(arr, l, m);\n\t\tmerge_sort(arr, m + 1, r);\n\t\tmerge(arr, l, m, r);\n\t}\n}",
+    "wordCount": 35
+  },
+  {
+    "id": "algo-hard-008",
+    "text": "void\ttrie_insert(t_trie *root, const char *key)\n{\n\tt_trie *curr = root;\n\n\twhile (*key)\n\t{\n\t\tint index = *key - 'a';\n\t\tif (!curr->children[index])\n\t\t\tcurr->children[index] = new_trie_node();\n\t\tcurr = curr->children[index];\n\t\tkey++;\n\t}\n\tcurr->is_end = 1;\n}",
+    "wordCount": 42
+  },
+  {
+    "id": "algo-hard-009",
+    "text": "int\tbinary_search_rec(int *arr, int l, int r, int x)\n{\n\tif (r >= l)\n\t{\n\t\tint mid = l + (r - l) / 2;\n\t\tif (arr[mid] == x)\n\t\t\treturn (mid);\n\t\tif (arr[mid] > x)\n\t\t\treturn (binary_search_rec(arr, l, mid - 1, x));\n\t\treturn (binary_search_rec(arr, mid + 1, r, x));\n\t}\n\treturn (-1);\n}",
+    "wordCount": 51
+  },
+  {
+    "id": "algo-hard-010",
+    "text": "void\theapify(int *arr, int n, int i)\n{\n\tint largest = i;\n\tint l = 2 * i + 1;\n\tint r = 2 * i + 2;\n\n\tif (l < n && arr[l] > arr[largest])\n\t\tlargest = l;\n\tif (r < n && arr[r] > arr[largest])\n\t\tlargest = r;\n\tif (largest != i)\n\t{\n\t\tint t = arr[i];\n\t\tarr[i] = arr[largest];\n\t\tarr[largest] = t;\n\t\theapify(arr, n, largest);\n\t}\n}",
+    "wordCount": 65
+  }
+]

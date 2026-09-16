@@ -1,0 +1,52 @@
+[
+  {
+    "id": "func-hard-001",
+    "text": "char\t**ft_split(char const *s, char c)\n{\n\tint\t\twords = count_words(s, c);\n\tchar\t**res = malloc((words + 1) * sizeof(char *));\n\n\tif (!res)\n\t\treturn (NULL);\n\tfor (int i = 0; i < words; i++)\n\t{\n\t\twhile (*s == c)\n\t\t\ts++;\n\t\tint len = word_len(s, c);\n\t\tres[i] = ft_substr(s, 0, len);\n\t\ts += len;\n\t}\n\tres[words] = NULL;\n\treturn (res);\n}",
+    "wordCount": 65
+  },
+  {
+    "id": "func-hard-002",
+    "text": "char\t*ft_itoa(int n)\n{\n\tif (n == -2147483648)\n\t\treturn (ft_strdup(\"-2147483648\"));\n\tint\t\tlen = get_len(n);\n\tchar\t*res = malloc(len + 1);\n\tif (!res)\n\t\treturn (NULL);\n\tres[len] = '\\0';\n\tif (n == 0)\n\t\tres[0] = '0';\n\tif (n < 0)\n\t{\n\t\tres[0] = '-';\n\t\tn = -n;\n\t}\n\twhile (n > 0)\n\t{\n\t\tres[--len] = (n % 10) + '0';\n\t\tn /= 10;\n\t}\n\treturn (res);\n}",
+    "wordCount": 67
+  },
+  {
+    "id": "func-hard-003",
+    "text": "char\t*ft_strtrim(char const *s1, char const *set)\n{\n\tif (!s1 || !set)\n\t\treturn (NULL);\n\tsize_t\tstart = 0;\n\twhile (s1[start] && strchr(set, s1[start]))\n\t\tstart++;\n\tsize_t\tend = strlen(s1);\n\twhile (end > start && strchr(set, s1[end - 1]))\n\t\tend--;\n\treturn (ft_substr(s1, start, end - start));\n}",
+    "wordCount": 51
+  },
+  {
+    "id": "func-hard-004",
+    "text": "t_list\t*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))\n{\n\tt_list\t*res = NULL;\n\tt_list\t*node;\n\n\twhile (lst)\n\t{\n\t\tvoid\t*content = f(lst->content);\n\t\tnode = ft_lstnew(content);\n\t\tif (!node)\n\t\t{\n\t\t\tdel(content);\n\t\t\tft_lstclear(&res, del);\n\t\t\treturn (NULL);\n\t\t}\n\t\tft_lstadd_back(&res, node);\n\t\tlst = lst->next;\n\t}\n\treturn (res);\n}",
+    "wordCount": 54
+  },
+  {
+    "id": "func-hard-005",
+    "text": "void\tft_lstclear(t_list **lst, void (*del)(void *))\n{\n\tt_list\t*tmp;\n\n\tif (!lst || !del)\n\t\treturn ;\n\twhile (*lst)\n\t{\n\t\ttmp = (*lst)->next;\n\t\tft_lstdelone(*lst, del);\n\t\t*lst = tmp;\n\t}\n\t*lst = NULL;\n}",
+    "wordCount": 35
+  },
+  {
+    "id": "func-hard-006",
+    "text": "void\tft_lstadd_back(t_list **lst, t_list *new)\n{\n\tif (lst && new)\n\t{\n\t\tif (*lst)\n\t\t\tft_lstlast(*lst)->next = new;\n\t\telse\n\t\t\t*lst = new;\n\t}\n}",
+    "wordCount": 23
+  },
+  {
+    "id": "func-hard-007",
+    "text": "void\tft_striteri(char *s, void (*f)(unsigned int, char *))\n{\n\tunsigned int\ti = 0;\n\n\tif (s && f)\n\t{\n\t\twhile (s[i])\n\t\t{\n\t\t\tf(i, &s[i]);\n\t\t\ti++;\n\t\t}\n\t}\n}",
+    "wordCount": 29
+  },
+  {
+    "id": "func-hard-008",
+    "text": "int\tft_strncmp(const char *s1, const char *s2, size_t n)\n{\n\tsize_t\ti = 0;\n\n\twhile (i < n && s1[i] && s1[i] == s2[i])\n\t\ti++;\n\tif (i == n)\n\t\treturn (0);\n\treturn ((unsigned char)s1[i] - (unsigned char)s2[i]);\n}",
+    "wordCount": 41
+  },
+  {
+    "id": "func-hard-009",
+    "text": "void\t*ft_memmove(void *dst, const void *src, size_t len)\n{\n\tunsigned char\t\t*d = dst;\n\tconst unsigned char\t*s = src;\n\n\tif (d < s)\n\t\twhile (len--)\n\t\t\t*d++ = *s++;\n\telse\n\t{\n\t\td += len;\n\t\ts += len;\n\t\twhile (len--)\n\t\t\t*--d = *--s;\n\t}\n\treturn (dst);\n}",
+    "wordCount": 44
+  },
+  {
+    "id": "func-hard-010",
+    "text": "char\t*ft_strnstr(const char *haystack, const char *needle, size_t len)\n{\n\tsize_t\tnlen = strlen(needle);\n\tif (!nlen)\n\t\treturn ((char *)haystack);\n\tfor (size_t i = 0; i + nlen <= len && haystack[i]; i++)\n\t{\n\t\tif (strncmp(&haystack[i], needle, nlen) == 0)\n\t\t\treturn ((char *)&haystack[i]);\n\t}\n\treturn (NULL);\n}",
+    "wordCount": 49
+  }
+]

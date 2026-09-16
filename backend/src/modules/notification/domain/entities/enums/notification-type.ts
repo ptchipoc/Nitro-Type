@@ -1,0 +1,7 @@
+export enum NotificationType {
+  SYSTEM = "SYSTEM",
+  COMMUNITY = "COMMUNITY",
+  EVENT = "EVENT",
+  DIRECT_MESSAGE = "DIRECT_MESSAGE",
+  FRIEND_REQUEST = "FRIEND_REQUEST",
+}

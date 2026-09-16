@@ -1,0 +1,23 @@
+[
+  { "id": "l3-1", "text": "constant variable function return", "wordCount": 4 },
+  {
+    "id": "l3-2",
+    "text": "database server application client",
+    "wordCount": 4
+  },
+  {
+    "id": "l3-3",
+    "text": "experience knowledge learning practice",
+    "wordCount": 4
+  },
+  {
+    "id": "l3-4",
+    "text": "performance optimized balance efficiency",
+    "wordCount": 4
+  },
+  {
+    "id": "l3-5",
+    "text": "community collaboration support growth",
+    "wordCount": 4
+  }
+]

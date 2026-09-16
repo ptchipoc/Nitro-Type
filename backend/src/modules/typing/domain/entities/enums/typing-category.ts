@@ -1,0 +1,6 @@
+export enum TypingCategory {
+  ANIME = "ANIME",
+  FUNCTIONS = "FUNCTIONS",
+  ALGORITHMS = "ALGORITHMS",
+  BEGINNER = "BEGINNER",
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "func-med-001",
+    "text": "char\t*ft_strdup(const char *s1)\n{\n\tchar\t*res = malloc(strlen(s1) + 1);\n\n\tif (!res)\n\t\treturn (NULL);\n\tstrcpy(res, s1);\n\treturn (res);\n}",
+    "wordCount": 23
+  },
+  {
+    "id": "func-med-002",
+    "text": "char\t*ft_substr(char const *s, unsigned int start, size_t len)\n{\n\tchar\t*res;\n\n\tif (!s)\n\t\treturn (NULL);\n\tif (start > strlen(s))\n\t\treturn (ft_strdup(\"\"));\n\tres = malloc(len + 1);\n\tif (!res)\n\t\treturn (NULL);\n\tstrncpy(res, s + start, len);\n\tres[len] = '\\0';\n\treturn (res);\n}",
+    "wordCount": 47
+  },
+  {
+    "id": "func-med-003",
+    "text": "char\t*ft_strjoin(char const *s1, char const *s2)\n{\n\tif (!s1 || !s2)\n\t\treturn (NULL);\n\tchar\t*res = malloc(strlen(s1) + strlen(s2) + 1);\n\tif (!res)\n\t\treturn (NULL);\n\tstrcpy(res, s1);\n\tstrcat(res, s2);\n\treturn (res);\n}",
+    "wordCount": 38
+  },
+  {
+    "id": "func-med-004",
+    "text": "void\tft_putchar_fd(char c, int fd)\n{\n\twrite(fd, &c, 1);\n}",
+    "wordCount": 11
+  },
+  {
+    "id": "func-med-005",
+    "text": "void\tft_putstr_fd(char *s, int fd)\n{\n\tif (s)\n\t\twrite(fd, s, strlen(s));\n}",
+    "wordCount": 14
+  },
+  {
+    "id": "func-med-006",
+    "text": "void\tft_putendl_fd(char *s, int fd)\n{\n\tft_putstr_fd(s, fd);\n\twrite(fd, \"\\n\", 1);\n}",
+    "wordCount": 15
+  },
+  {
+    "id": "func-med-007",
+    "text": "t_list\t*ft_lstnew(void *content)\n{\n\tt_list\t*res = malloc(sizeof(t_list));\n\n\tif (!res)\n\t\treturn (NULL);\n\tres->content = content;\n\tres->next = NULL;\n\treturn (res);\n}",
+    "wordCount": 26
+  },
+  {
+    "id": "func-med-008",
+    "text": "void\tft_lstadd_front(t_list **lst, t_list *new)\n{\n\tif (lst && new)\n\t{\n\t\tnew->next = *lst;\n\t\t*lst = new;\n\t}\n}",
+    "wordCount": 21
+  },
+  {
+    "id": "func-med-009",
+    "text": "int\tft_lstsize(t_list *lst)\n{\n\tint\ti = 0;\n\n\twhile (lst)\n\t{\n\t\tlst = lst->next;\n\t\ti++;\n\t}\n\treturn (i);\n}",
+    "wordCount": 19
+  },
+  {
+    "id": "func-med-010",
+    "text": "t_list\t*ft_lstlast(t_list *lst)\n{\n\tif (!lst)\n\t\treturn (NULL);\n\twhile (lst->next)\n\t\tlst = lst->next;\n\treturn (lst);\n}",
+    "wordCount": 19
+  }
+]

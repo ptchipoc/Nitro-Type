@@ -1,0 +1,52 @@
+[
+  {
+    "id": "func-easy-001",
+    "text": "size_t\tft_strlen(const char *s)\n{\n\tsize_t\ti = 0;\n\n\twhile (s[i])\n\t\ti++;\n\treturn (i);\n}",
+    "wordCount": 16
+  },
+  {
+    "id": "func-easy-002",
+    "text": "void\t*ft_memset(void *b, int c, size_t len)\n{\n\tunsigned char\t*p = b;\n\n\twhile (len--)\n\t\t*p++ = (unsigned char)c;\n\treturn (b);\n}",
+    "wordCount": 23
+  },
+  {
+    "id": "func-easy-003",
+    "text": "void\tft_bzero(void *s, size_t n)\n{\n\tunsigned char\t*p = s;\n\n\twhile (n--)\n\t\t*p++ = 0;\n}",
+    "wordCount": 17
+  },
+  {
+    "id": "func-easy-004",
+    "text": "void\t*ft_memcpy(void *dst, const void *src, size_t n)\n{\n\tunsigned char\t*d = dst;\n\tconst unsigned char\t*s = src;\n\n\twhile (n--)\n\t\t*d++ = *s++;\n\treturn (dst);\n}",
+    "wordCount": 30
+  },
+  {
+    "id": "func-easy-005",
+    "text": "int\tft_isalpha(int c)\n{\n\treturn ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));\n}",
+    "wordCount": 18
+  },
+  {
+    "id": "func-easy-006",
+    "text": "int\tft_isdigit(int c)\n{\n\treturn (c >= '0' && c <= '9');\n}",
+    "wordCount": 12
+  },
+  {
+    "id": "func-easy-007",
+    "text": "int\tft_isalnum(int c)\n{\n\treturn (ft_isalpha(c) || ft_isdigit(c));\n}",
+    "wordCount": 12
+  },
+  {
+    "id": "func-easy-008",
+    "text": "int\tft_tolower(int c)\n{\n\tif (c >= 'A' && c <= 'Z')\n\t\treturn (c + 32);\n\treturn (c);\n}",
+    "wordCount": 17
+  },
+  {
+    "id": "func-easy-009",
+    "text": "int\tft_toupper(int c)\n{\n\tif (c >= 'a' && c <= 'z')\n\t\treturn (c - 32);\n\treturn (c);\n}",
+    "wordCount": 17
+  },
+  {
+    "id": "func-easy-010",
+    "text": "char\t*ft_strchr(const char *s, int c)\n{\n\twhile (*s)\n\t{\n\t\tif (*s == (char)c)\n\t\t\treturn ((char *)s);\n\t\ts++;\n\t}\n\tif (*s == (char)c)\n\t\treturn ((char *)s);\n\treturn (NULL);\n}",
+    "wordCount": 32
+  }
+]

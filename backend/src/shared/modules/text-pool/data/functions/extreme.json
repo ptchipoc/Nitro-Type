@@ -1,0 +1,52 @@
+[
+  {
+    "id": "func-ext-001",
+    "text": "char\t*get_next_line(int fd)\n{\n\tstatic char\t*stash;\n\tchar\t\t*line;\n\tchar\t\t*buf;\n\n\tif (fd < 0 || BUFFER_SIZE <= 0)\n\t\treturn (NULL);\n\tbuf = malloc(BUFFER_SIZE + 1);\n\tif (!buf)\n\t\treturn (NULL);\n\tstash = read_and_stash(fd, stash, buf);\n\tfree(buf);\n\tif (!stash)\n\t\treturn (NULL);\n\tline = extract_line(stash);\n\tstash = update_stash(stash);\n\treturn (line);\n}",
+    "wordCount": 65
+  },
+  {
+    "id": "func-ext-002",
+    "text": "int\tft_printf(const char *format, ...)\n{\n\tva_list\targs;\n\tint\t\tcount = 0;\n\n\tva_start(args, format);\n\twhile (*format)\n\t{\n\t\tif (*format == '%')\n\t\t\tcount += handle_format(*(++format), args);\n\t\telse\n\t\t\tcount += write(1, format, 1);\n\t\tformat++;\n\t}\n\tva_end(args);\n\treturn (count);\n}",
+    "wordCount": 42
+  },
+  {
+    "id": "func-ext-003",
+    "text": "int\thandle_format(char spec, va_list args)\n{\n\tif (spec == 'c')\n\t\treturn (ft_putchar_len(va_arg(args, int)));\n\tif (spec == 's')\n\t\treturn (ft_putstr_len(va_arg(args, char *)));\n\tif (spec == 'p')\n\t\treturn (ft_putptr_len(va_arg(args, void *)));\n\tif (spec == 'd' || spec == 'i')\n\t\treturn (ft_putnbr_len(va_arg(args, int)));\n\tif (spec == 'u')\n\t\treturn (ft_putunbr_len(va_arg(args, unsigned int)));\n\treturn (0);\n}",
+    "wordCount": 63
+  },
+  {
+    "id": "func-ext-004",
+    "text": "char\t*read_and_stash(int fd, char *stash, char *buf)\n{\n\tint\tbytes_read = 1;\n\n\twhile (!ft_strchr(stash, '\\n') && bytes_read != 0)\n\t{\n\t\tbytes_read = read(fd, buf, BUFFER_SIZE);\n\t\tif (bytes_read == -1)\n\t\t\treturn (NULL);\n\t\tbuf[bytes_read] = '\\0';\n\t\tstash = ft_strjoin_gnl(stash, buf);\n\t}\n\treturn (stash);\n}",
+    "wordCount": 51
+  },
+  {
+    "id": "func-ext-005",
+    "text": "char\t*extract_line(char *stash)\n{\n\tint\ti = 0;\n\n\tif (!stash[i])\n\t\treturn (NULL);\n\twhile (stash[i] && stash[i] != '\\n')\n\t\ti++;\n\tchar *line = malloc(i + 2);\n\tif (!line)\n\t\treturn (NULL);\n\ti = 0;\n\twhile (stash[i] && stash[i] != '\\n')\n\t{\n\t\tline[i] = stash[i];\n\t\ti++;\n\t}\n\tif (stash[i] == '\\n')\n\t\tline[i++] = '\\n';\n\tline[i] = '\\0';\n\treturn (line);\n}",
+    "wordCount": 66
+  },
+  {
+    "id": "func-ext-006",
+    "text": "char\t*update_stash(char *stash)\n{\n\tint\ti = 0;\n\n\twhile (stash[i] && stash[i] != '\\n')\n\t\ti++;\n\tif (!stash[i])\n\t{\n\t\tfree(stash);\n\t\treturn (NULL);\n\t}\n\tchar *new_stash = malloc(strlen(stash) - i + 1);\n\tif (!new_stash)\n\t\treturn (NULL);\n\ti++;\n\tint j = 0;\n\twhile (stash[i])\n\t\tnew_stash[j++] = stash[i++];\n\tnew_stash[j] = '\\0';\n\tfree(stash);\n\treturn (new_stash);\n}",
+    "wordCount": 63
+  },
+  {
+    "id": "func-ext-007",
+    "text": "int\tft_putnbr_base(long n, char *base)\n{\n\tint\tcount = 0;\n\tint\tbase_len = strlen(base);\n\n\tif (n < 0)\n\t{\n\t\tcount += write(1, \"-\", 1);\n\t\tn = -n;\n\t}\n\tif (n >= base_len)\n\t\tcount += ft_putnbr_base(n / base_len, base);\n\tcount += write(1, &base[n % base_len], 1);\n\treturn (count);\n}",
+    "wordCount": 49
+  },
+  {
+    "id": "func-ext-008",
+    "text": "int\tft_putptr_len(void *ptr)\n{\n\tunsigned long\taddr = (unsigned long)ptr;\n\tint\t\t\t\tcount = write(1, \"0x\", 2);\n\n\tcount += ft_puthex_len(addr, \"0123456789abcdef\");\n\treturn (count);\n}",
+    "wordCount": 27
+  },
+  {
+    "id": "func-ext-009",
+    "text": "void\tft_striteri(char *s, void (*f)(unsigned int, char *))\n{\n\tif (!s || !f)\n\t\treturn ;\n\tfor (unsigned int i = 0; s[i]; i++)\n\t\tf(i, &s[i]);\n}",
+    "wordCount": 26
+  },
+  {
+    "id": "func-ext-010",
+    "text": "char\t*ft_strmapi(char const *s, char (*f)(unsigned int, char))\n{\n\tif (!s || !f)\n\t\treturn (NULL);\n\tchar *res = malloc(strlen(s) + 1);\n\tif (!res)\n\t\treturn (NULL);\n\tfor (unsigned int i = 0; s[i]; i++)\n\t\tres[i] = f(i, s[i]);\n\tres[strlen(s)] = '\\0';\n\treturn (res);\n}",
+    "wordCount": 47
+  }
+]

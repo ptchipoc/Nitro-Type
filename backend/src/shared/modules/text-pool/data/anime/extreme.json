@@ -1,0 +1,154 @@
+[
+  {
+    "id": "anime-ext-001",
+    "text": "t_ninja\t*summon_naruto(t_scroll *scroll, int chakra_cost)\n{\n\tif (!scroll->is_active || scroll->chakra < chakra_cost)\n\t\treturn (NULL);\n\tscroll->chakra -= chakra_cost;\n\treturn (create_jutsu(\"Rasengan\", scroll->user));\n}",
+    "wordCount": 24
+  },
+  {
+    "id": "anime-ext-002",
+    "text": "typedef struct\ts_goku\n{\n\tint\t\t\tlevel;\n\tunsigned long\tpower;\n\tchar\t\t\tssj_color[16];\n\tbool\t\t\tmastered;\n\tt_transformation\t*forms;\n\tint\t\t\tkaio_ken_multiplier;\n}\tt_saiyan;",
+    "wordCount": 18
+  },
+  {
+    "id": "anime-ext-003",
+    "text": "void\tactivate_devil_fruit(t_pirate *luffy, e_fruit_type type)\n{\n\tif (luffy->fruit_type == type && type == PARAMECIA)\n\t{\n\t\tluffy->is_rubber = true;\n\t\tluffy->cannot_swim = true;\n\t\tluffy->haki_level += 50;\n\t}\n}",
+    "wordCount": 28
+  },
+  {
+    "id": "anime-ext-004",
+    "text": "typedef struct\ts_shinigami\n{\n\tbool\tdeath_note_active;\n\tbool\tshinigami_eyes;\n\tint\t\tremaining_lifespan;\n\tchar\t*current_owner_name;\n\tt_realm\t*origin_realm;\n\tbool\tloves_apples;\n}\tt_shinigami;",
+    "wordCount": 20
+  },
+  {
+    "id": "anime-ext-005",
+    "text": "t_hollow\t*hollow_resurrection(t_ichigo *ichigo, bool is_critical)\n{\n\tif (is_critical && ichigo->spirit_energy > 1000)\n\t{\n\t\tichigo->form = VASTO_LORDE;\n\t\treturn (merge_all_powers(ichigo));\n\t}\n\treturn (NULL);\n}",
+    "wordCount": 26
+  },
+  {
+    "id": "anime-ext-006",
+    "text": "t_titan\t*titan_shift(t_eldian *hero, t_coordinate *coord)\n{\n\tif (hero->willpower < 100 || !hero->is_wounded)\n\t\treturn (NULL);\n\thero->stamina -= 50;\n\treturn (transform(hero, coord->power_source));\n}",
+    "wordCount": 27
+  },
+  {
+    "id": "anime-ext-007",
+    "text": "typedef struct\ts_breath\n{\n\tchar\t*breathing_style_name;\n\tchar\t*form_technique_name;\n\tint\t\tpower_multiplier;\n\tbool\tsun_compatibility;\n\tint\t\tstamina_drain_rate;\n\tbool\tmark_active;\n}\tt_breath;",
+    "wordCount": 22
+  },
+  {
+    "id": "anime-ext-008",
+    "text": "typedef enum\te_nen_type\n{\n\tENHANCER = 1,\n\tEMITTER = 2,\n\tTRANSMUTER = 3,\n\tCONJURER = 4,\n\tMANIPULATOR = 5,\n\tSPECIALIST = 6,\n\tUNKNOWN_TYPE = 0\n}\tt_nen_category;",
+    "wordCount": 23
+  },
+  {
+    "id": "anime-ext-009",
+    "text": "void\tautomail_upgrade(t_alchemist *edward, e_metal type)\n{\n\tint\ti = 0;\n\n\twhile (i < MAX_LIMBS)\n\t{\n\t\tif (edward->limbs[i].is_mechanical)\n\t\t\tedward->limbs[i].material = type;\n\t\ti++;\n\t}\n}",
+    "wordCount": 24
+  },
+  {
+    "id": "anime-ext-010",
+    "text": "void\tadd_pirate_member(t_crew *crew, t_pirate *member)\n{\n\tif (crew->count < MAX_MEMBERS && member->bounty > MIN_BOUNTY)\n\t{\n\t\tcrew->members[crew->count++] = member;\n\t\tcrew->total_bounty += member->bounty;\n\t}\n}",
+    "wordCount": 28
+  }
+,
+  {
+    "id": "anime-ext-011",
+    "text": "void\tBANKAI(t_ichigo *kurosaki)\n{\n\tif (kurosaki->spirit_pressure > 9000 && !kurosaki->is_exhausted)\n\t{\n\t\tactivate_zangetsu(kurosaki->sword);\n\t\tkurosaki->speed *= 10;\n\t\tkurosaki->outfit_color = BLACK;\n\t}\n}",
+    "wordCount": 26
+  },
+  {
+    "id": "anime-ext-012",
+    "text": "t_alchemist\t*transmute(t_exchange *law, bool use_stone)\n{\n\tif (use_stone || law->gain == law->loss)\n\t\treturn (create_object(law->target_material));\n\treturn (NULL);\n}",
+    "wordCount": 21
+  },
+  {
+    "id": "anime-ext-013",
+    "text": "void\tdomain_expansion(t_gojo *satoru, int duration)\n{\n\tif (satoru->cursed_energy > 500)\n\t{\n\t\tsatoru->unlimited_void = true;\n\t\tstun_all_enemies(satoru->range, duration);\n\t\tsatoru->cursed_energy -= 500;\n\t}\n}",
+    "wordCount": 27
+  },
+  {
+    "id": "anime-ext-014",
+    "text": "typedef struct\ts_death_note\n{\n\tchar\t*victim_full_name;\n\tint\t\tseconds_to_die;\n\tvoid\t(*cause_of_death)(t_person *);\n\tbool\tface_is_known;\n\tt_shinigami\t*attached_god;\n}\tt_note;",
+    "wordCount": 23
+  },
+  {
+    "id": "anime-ext-015",
+    "text": "t_titan\t*founding_titan_call(t_path *path, t_eldian *target)\n{\n\tif (path->has_royal_blood && path->is_connected)\n\t\treturn (awaken_the_rumbling(target));\n\treturn (NULL);\n}",
+    "wordCount": 22
+  },
+  {
+    "id": "anime-ext-016",
+    "text": "void\tgear_fifth(t_luffy *joyboy)\n{\n\tjoyboy->ridiculous_power = true;\n\tluffy->heartbeat = DRUMS_OF_LIBERATION;\n\tluffy->is_white_form = true;\n\tworld_physics_override(joyboy->range);\n}",
+    "wordCount": 23
+  },
+  {
+    "id": "anime-ext-017",
+    "text": "t_hero\t*one_for_all(t_quirk *stockpile, t_person *successor)\n{\n\tif (successor->will_to_save > 100)\n\t\treturn (pass_power(successor, stockpile->strength + stockpile->added_power));\n\treturn (NULL);\n}",
+    "wordCount": 25
+  },
+  {
+    "id": "anime-ext-018",
+    "text": "void\tkamehameha(t_goku *saiyan, int multiplier)\n{\n\twhile (saiyan->charging && saiyan->ki < MAX_KI)\n\t\tsaiyan->ki += (1000 * multiplier);\n\tfire_energy_beam(saiyan->ki);\n\tsaiyan->ki = 0;\n}",
+    "wordCount": 25
+  },
+  {
+    "id": "anime-ext-019",
+    "text": "typedef enum\te_beherit_type\n{\n\tBEHERIT_DORMANT = 0,\n\tBEHERIT_GREEN = 1,\n\tBEHERIT_BLUE = 2,\n\tBEHERIT_SILVER = 3,\n\tBEHERIT_CRIMSON_EGG = 4,\n\tBEHERIT_AWAKENED = 5\n}\tt_beherit;",
+    "wordCount": 22
+  },
+  {
+    "id": "anime-ext-020",
+    "text": "void\trewrite_reality(t_madoka *goddess)\n{\n\tif (goddess->hope > goddess->despair)\n\t{\n\t\tdelete_all_witches_from_history();\n\t\tgoddess->is_conceptual_law = true;\n\t\tgoddess->existence_erased = true;\n\t}\n}",
+    "wordCount": 25
+  }
+,
+  {
+    "id": "anime-ext-021",
+    "text": "void\tshinra_tensei(t_pain *nagato, t_target *target)\n{\n\tif (nagato->chakra_level >= 100)\n\t{\n\t\tnagato->chakra_level -= 100;\n\t\tpush_away_everything(target, FORCE_MAXIMUM);\n\t\tcity_destroyed = true;\n\t}\n}",
+    "wordCount": 26
+  },
+  {
+    "id": "anime-ext-022",
+    "text": "t_cursed_tool\t*toji_inventory(t_spirit *worm, int index)\n{\n\tif (worm->is_hidden && index < worm->storage_capacity)\n\t\treturn (worm->stored_items[index]);\n\treturn (NULL);\n}",
+    "wordCount": 23
+  },
+  {
+    "id": "anime-ext-023",
+    "text": "void\tza_warudo(t_dio *vampire, int max_seconds)\n{\n\tstop_time(max_seconds);\n\twhile (vampire->stamina > 0 && vampire->time_frozen)\n\t{\n\t\tthrow_multiple_knives(vampire->target_coordinates);\n\t\tvampire->stamina -= 5;\n\t}\n}",
+    "wordCount": 28
+  },
+  {
+    "id": "anime-ext-024",
+    "text": "typedef struct\ts_demon_slayer\n{\n\tchar\t*slayer_name;\n\tchar\t*breathing_style;\n\tint\t\tslayer_rank;\n\tbool\tslayer_mark_active;\n\tt_sword\t*nichirin_blade;\n\tbool\ttransparent_world;\n}\tt_slayer;",
+    "wordCount": 23
+  },
+  {
+    "id": "anime-ext-025",
+    "text": "t_nen_user\t*gon_transformation(t_hunter *gon)\n{\n\tif (gon->total_despair > 9000)\n\t{\n\t\tgon->sacrifice_all = true;\n\t\tgon->nen_power = LIMITLESS;\n\t\treturn (force_biological_aging(gon, ADULT_FORM));\n\t}\n\treturn (NULL);\n}",
+    "wordCount": 28
+  },
+  {
+    "id": "anime-ext-026",
+    "text": "void\tamaterasu(t_itachi *uchiha, t_eye *target_eye)\n{\n\tuchiha->is_using_mangekyou = true;\n\tuchiha->eye_bleeding = true;\n\tspawn_eternal_black_fire(uchiha->vision_point);\n\tuchiha->stamina -= 80;\n}",
+    "wordCount": 24
+  },
+  {
+    "id": "anime-ext-027",
+    "text": "t_contract\t*make_wish(t_kyubey *alien, t_girl *target)\n{\n\tif (target->hope_potential > target->despair_potential)\n\t{\n\t\tspawn_soul_gem(target);\n\t\treturn (create_new_magical_girl(target));\n\t}\n\treturn (NULL);\n}",
+    "wordCount": 26
+  },
+  {
+    "id": "anime-ext-028",
+    "text": "void\tfull_counter(t_meliodas *dragon, t_magic *attack)\n{\n\tif (attack->is_magic && dragon->is_active)\n\t{\n\t\treflect_attack_back(attack->power * 2);\n\t\tdragon->stamina -= 20;\n\t}\n}",
+    "wordCount": 24
+  },
+  {
+    "id": "anime-ext-029",
+    "text": "typedef enum\te_beherit_state\n{\n\tSTATE_DORMANT = 0,\n\tSTATE_AWAKENED = 1,\n\tSTATE_SACRIFICE_READY = 2,\n\tSTATE_ECLIPSE_TRIGGERED = 3,\n\tSTATE_GOD_HAND_SUMMONED = 4\n}\tt_beherit_status;",
+    "wordCount": 25
+  },
+  {
+    "id": "anime-ext-030",
+    "text": "void\trewrite_fate(t_homura *demon, t_madoka *target)\n{\n\twhile (target->is_alive == false || target->is_witch == true)\n\t{\n\t\thomura->time_loops_count++;\n\t\thomura->despair_level += 10;\n\t\tperform_time_reset(target);\n\t}\n}",
+    "wordCount": 29
+  }
+]

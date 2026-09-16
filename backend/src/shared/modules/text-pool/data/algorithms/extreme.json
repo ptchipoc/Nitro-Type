@@ -1,0 +1,52 @@
+[
+  {
+    "id": "algo-ext-001",
+    "text": "void\trbt_insert_fixup(t_rbt **root, t_node *z)\n{\n\twhile (z->parent->color == RED)\n\t{\n\t\tif (z->parent == z->parent->parent->left)\n\t\t{\n\t\t\tt_node\t*y = z->parent->parent->right;\n\t\t\tif (y->color == RED)\n\t\t\t{\n\t\t\t\tz->parent->color = BLACK;\n\t\t\t\ty->color = BLACK;\n\t\t\t\tz->parent->parent->color = RED;\n\t\t\t\tz = z->parent->parent;\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\tif (z == z->parent->right)\n\t\t\t\t{\n\t\t\t\t\tz = z->parent;\n\t\t\t\t\tleft_rotate(root, z);\n\t\t\t\t}\n\t\t\t\tz->parent->color = BLACK;\n\t\t\t\tz->parent->parent->color = RED;\n\t\t\t\tright_rotate(root, z->parent->parent);\n\t\t\t}\n\t\t}\n\t\telse\n\t\t{\n\t\t\t/* Symmetric case */\n\t\t}\n\t}\n\t(*root)->color = BLACK;\n}",
+    "wordCount": 94
+  },
+  {
+    "id": "algo-ext-002",
+    "text": "t_node\t*delete_node_avl(t_node *root, int key)\n{\n\tif (!root)\n\t\treturn (root);\n\tif (key < root->key)\n\t\troot->left = delete_node_avl(root->left, key);\n\telse if (key > root->key)\n\t\troot->right = delete_node_avl(root->right, key);\n\telse\n\t{\n\t\tif (!root->left || !root->right)\n\t\t{\n\t\t\tt_node\t*temp = root->left ? root->left : root->right;\n\t\t\tif (!temp)\n\t\t\t{\n\t\t\t\ttemp = root;\n\t\t\t\troot = NULL;\n\t\t\t}\n\t\t\telse\n\t\t\t\t*root = *temp;\n\t\t\tfree(temp);\n\t\t}\n\t\telse\n\t\t{\n\t\t\tt_node\t*temp = min_value_node(root->right);\n\t\t\troot->key = temp->key;\n\t\t\troot->right = delete_node_avl(root->right, temp->key);\n\t\t}\n\t}\n\tif (!root)\n\t\treturn (root);\n\troot->height = 1 + max(height(root->left), height(root->right));\n\treturn (balance_node(root));\n}",
+    "wordCount": 110
+  },
+  {
+    "id": "algo-ext-003",
+    "text": "int\tedmonds_karp(int graph[V][V], int s, int t)\n{\n\tint\trGraph[V][V];\n\n\tfor (int u = 0; u < V; u++)\n\t\tfor (int v = 0; v < V; v++)\n\t\t\trGraph[u][v] = graph[u][v];\n\tint\tparent[V];\n\tint\tmax_flow = 0;\n\twhile (bfs(rGraph, s, t, parent))\n\t{\n\t\tint\tpath_flow = INT_MAX;\n\t\tfor (int v = t; v != s; v = parent[v])\n\t\t{\n\t\t\tint\tu = parent[v];\n\t\t\tpath_flow = min(path_flow, rGraph[u][v]);\n\t\t}\n\t\tfor (int v = t; v != s; v = parent[v])\n\t\t{\n\t\t\tint\tu = parent[v];\n\t\t\trGraph[u][v] -= path_flow;\n\t\t\trGraph[v][u] += path_flow;\n\t\t}\n\t\tmax_flow += path_flow;\n\t}\n\treturn (max_flow);\n}",
+    "wordCount": 105
+  },
+  {
+    "id": "algo-ext-004",
+    "text": "int\tquery_segment_tree(int *tree, int node, int start, int end, int l, int r)\n{\n\tif (r < start || end < l)\n\t\treturn (0);\n\tif (l <= start && end <= r)\n\t\treturn (tree[node]);\n\tint\tmid = (start + end) / 2;\n\treturn (query_segment_tree(tree, 2 * node, start, mid, l, r) + query_segment_tree(tree, 2 * node + 1, mid + 1, end, l, r));\n}",
+    "wordCount": 59
+  },
+  {
+    "id": "algo-ext-005",
+    "text": "int\tfind(t_uf *uf, int i)\n{\n\tif (uf->parent[i] == i)\n\t\treturn (i);\n\treturn (uf->parent[i] = find(uf, uf->parent[i]));\n}\n\nvoid\tunite(t_uf *uf, int x, int y)\n{\n\tint\trootX = find(uf, x);\n\tint\trootY = find(uf, y);\n\tif (rootX != rootY)\n\t{\n\t\tif (uf->rank[rootX] < uf->rank[rootY])\n\t\t\tuf->parent[rootX] = rootY;\n\t\telse if (uf->rank[rootX] > uf->rank[rootY])\n\t\t\tuf->parent[rootY] = rootX;\n\t\telse\n\t\t{\n\t\t\tuf->parent[rootY] = rootX;\n\t\t\tuf->rank[rootX]++;\n\t\t}\n\t}\n}",
+    "wordCount": 78
+  },
+  {
+    "id": "algo-ext-006",
+    "text": "void\tsolve_n_queens(int *board, int row, int n, int *count)\n{\n\tif (row == n)\n\t{\n\t\t(*count)++;\n\t\treturn ;\n\t}\n\tfor (int col = 0; col < n; col++)\n\t{\n\t\tif (is_safe(board, row, col, n))\n\t\t{\n\t\t\tboard[row] = col;\n\t\t\tsolve_n_queens(board, row + 1, n, count);\n\t\t}\n\t}\n}",
+    "wordCount": 44
+  },
+  {
+    "id": "algo-ext-007",
+    "text": "int\tlcs(char *X, char *Y, int m, int n)\n{\n\tint\tL[m + 1][n + 1];\n\n\tfor (int i = 0; i <= m; i++)\n\t{\n\t\tfor (int j = 0; j <= n; j++)\n\t\t{\n\t\t\tif (i == 0 || j == 0)\n\t\t\t\tL[i][j] = 0;\n\t\t\telse if (X[i - 1] == Y[j - 1])\n\t\t\t\tL[i][j] = L[i - 1][j - 1] + 1;\n\t\t\telse\n\t\t\t\tL[i][j] = max(L[i - 1][j], L[i][j - 1]);\n\t\t}\n\t}\n\treturn (L[m][n]);\n}",
+    "wordCount": 85
+  },
+  {
+    "id": "algo-ext-008",
+    "text": "void\tsplay(t_node **root, int key)\n{\n\tif (*root == NULL || (*root)->key == key)\n\t\treturn ;\n\tif ((*root)->key > key)\n\t{\n\t\tif ((*root)->left == NULL)\n\t\t\treturn ;\n\t\tif ((*root)->left->key > key)\n\t\t{\n\t\t\tsplay(&((*root)->left->left), key);\n\t\t\t*root = right_rotate(*root);\n\t\t}\n\t\telse if ((*root)->left->key < key)\n\t\t{\n\t\t\tsplay(&((*root)->left->right), key);\n\t\t\tif ((*root)->left->right != NULL)\n\t\t\t\t(*root)->left = left_rotate((*root)->left);\n\t\t}\n\t\tif ((*root)->left != NULL)\n\t\t\t*root = right_rotate(*root);\n\t}\n\telse\n\t{\n\t\t/* Symmetric case */\n\t}\n}",
+    "wordCount": 88
+  },
+  {
+    "id": "algo-ext-009",
+    "text": "int\tknapsack(int W, int *wt, int *val, int n)\n{\n\tint\tdp[n + 1][W + 1];\n\n\tfor (int i = 0; i <= n; i++)\n\t{\n\t\tfor (int w = 0; w <= W; w++)\n\t\t{\n\t\t\tif (i == 0 || w == 0)\n\t\t\t\tdp[i][w] = 0;\n\t\t\telse if (wt[i - 1] <= w)\n\t\t\t\tdp[i][w] = max(val[i - 1] + dp[i - 1][w - wt[i - 1]], dp[i - 1][w]);\n\t\t\telse\n\t\t\t\tdp[i][w] = dp[i - 1][w];\n\t\t}\n\t}\n\treturn (dp[n][W]);\n}",
+    "wordCount": 87
+  },
+  {
+    "id": "algo-ext-010",
+    "text": "void\tbitwise_n_queens(uint32_t ld, uint32_t col, uint32_t rd, uint32_t mask, int *count)\n{\n\tif (col == mask)\n\t{\n\t\t(*count)++;\n\t\treturn ;\n\t}\n\tuint32_t\tpos = mask & ~(ld | col | rd);\n\twhile (pos)\n\t{\n\t\tuint32_t\tp = pos & -pos;\n\t\tpos -= p;\n\t\tbitwise_n_queens((ld | p) << 1, col | p, (rd | p) >> 1, mask, count);\n\t}\n}",
+    "wordCount": 55
+  }
+]

@@ -1,0 +1,7 @@
+export enum ParticipantStatus {
+  INVITED = "INVITED",
+  ACCEPTED = "ACCEPTED",
+  PLAYING = "PLAYING",
+  ABANDONED = "ABANDONED",
+  FINISHED = "FINISHED",
+}

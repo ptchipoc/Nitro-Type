@@ -1,0 +1,7 @@
+[
+  { "id": "l2-1", "text": "the quick brown fox jumps", "wordCount": 5 },
+  { "id": "l2-2", "text": "lazy dog runs over fence", "wordCount": 5 },
+  { "id": "l2-3", "text": "qwerty uiop zxcv bnm", "wordCount": 4 },
+  { "id": "l2-4", "text": "vocal music playing loud", "wordCount": 4 },
+  { "id": "l2-5", "text": "bright sun shines to day", "wordCount": 5 }
+]

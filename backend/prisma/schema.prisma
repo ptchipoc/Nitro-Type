@@ -1,0 +1,628 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// PostgreSQL (padrão)
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite (dev rápido) — comenta o PostgreSQL e descomenta:
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db"
+// }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING
+  SUSPENDED
+  BANNED
+}
+
+enum ProfileVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  GITHUB
+  INTRA42
+}
+
+enum ExerciseSubmissionStatus {
+  PENDING
+  PROCESSING
+  ACCEPTED
+  WRONG_ANSWER
+  TLE
+  RUNTIME_ERROR
+}
+
+enum ExerciseAttemptStatus {
+  IN_PROGRESS
+  SOLVED
+  ABANDONED
+}
+
+enum VerificationType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+// ── Identity ──────────────────────────────────────────────────────────────────
+model User {
+  id            String     @id @default(uuid())
+  name          String
+  email         String     @unique
+  emailVerified Boolean    @default(false)
+  passwordHash  String?
+  avatarUrl     String?
+  role          Role       @default(USER)
+  status        UserStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  lastLoginAt   DateTime?
+
+  profile  UserProfile?
+  accounts AuthProviderAccount[]
+
+  xpTransactions        XpTransaction[]
+  typingSessions        TypingSession[]
+  typingSessionResults  TypingSessionResult[]
+  userProgress          UserProgress?
+  typingLearning        TypingLearning?
+  notifications         Notification[]
+  messages              Message[]
+  channelMembers        ChannelMember[]
+  userPresence          UserPresence?
+  communityReadReceipts CommunityReadReceipt[]
+  friendshipsSent       Friendship[]           @relation("friendshipsSent")
+  friendshipsReceived   Friendship[]           @relation("friendshipsReceived")
+  eventParticipants     EventParticipant[]
+
+  @@index([status])
+  @@index([role])
+  @@map("user")
+}
+
+model UserProfile {
+  userId      String   @id
+  bio         String?
+  country     String?
+  socialLinks Json     @default("[]")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profile")
+}
+
+model AuthProviderAccount {
+  id         String       @id @default(uuid())
+  providerId String?
+  provider   AuthProvider
+  userId     String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String           @id @default(uuid())
+  identifier String
+  value      String
+  type       VerificationType @default(EMAIL_VERIFICATION)
+  expiresAt  DateTime
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("password_reset")
+}
+
+// ── Progression ───────────────────────────────────────────────────────────────
+
+model UserProgress {
+  id             String    @id @default(uuid())
+  userId         String
+  totalXp        Int       @default(0)
+  totalEvents    Int       @default(0)
+  level          Int       @default(1)
+  rank           Int?
+  rankTitle      String?
+  eventsWon      Int       @default(0)
+  lastActivityAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  xpTransactions XpTransaction[]
+
+  @@unique([userId])
+  @@index([userId])
+}
+
+model XpTransaction {
+  id                   String   @id @default(uuid())
+  userId               String
+  userModuleProgressId String
+  amount               Int
+  reason               String
+  referenceId          String?
+  createdAt            DateTime @default(now())
+
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress UserProgress @relation(fields: [userModuleProgressId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([userModuleProgressId, createdAt])
+}
+
+enum SessionStatus {
+  WAITING
+  ACTIVE
+  FINISHED
+}
+
+// ── Typing ────────────────────────────────────────────────────────────────────
+
+enum TypingDifficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXTREME
+}
+
+enum TypingCategory {
+  BEGINNER
+  ANIME
+  FUNCTIONS
+  ALGORITHMS
+}
+
+model TypingSession {
+  id         String           @id @default(uuid())
+  creatorId  String
+  category   TypingCategory
+  difficulty TypingDifficulty
+  timeLimit  Int
+  text       String
+  wordCount  Int
+  status     SessionStatus    @default(WAITING)
+  startedAt  DateTime?
+  finishedAt DateTime?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  typingSessionResults TypingSessionResult[]
+  creator              User                  @relation(fields: [creatorId], references: [id])
+
+  @@index([creatorId, startedAt])
+  @@index([status])
+}
+
+enum TypingSessionResultStatus {
+  COMPLETED
+  TIMEOUT
+  ABANDONED
+}
+
+model TypingSessionResult {
+  id                  String                    @id @default(uuid())
+  sessionId           String
+  userId              String
+  wpm                 Int
+  totalChars          Int
+  accuracy            Float
+  errorRate           Float
+  completionRate      Float
+  typedChars          Int
+  correctTypedChars   Int
+  incorrectTypedChars Int
+  durationSeconds     Int
+  xpEarned            Int
+  score               Int                       @default(0)
+  status              TypingSessionResultStatus @default(COMPLETED)
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+  completedAt         DateTime
+
+  session TypingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, wpm])
+  @@index([userId, wpm])
+}
+
+enum TypingStage {
+  STAGE_1_HOME_ROW
+  STAGE_2_ROW
+  STAGE_3_WORD
+  STAGE_4_SENTENCE
+  STAGE_5_PARAGRAPH
+}
+
+model TypingLearning {
+  id     String @id @default(uuid())
+  userId String
+
+  currentStage TypingStage @default(STAGE_1_HOME_ROW)
+
+  totalAccuracy Float @default(0)
+  totalSessions Int   @default(0)
+
+  lastPracticedAt DateTime?
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
+  @@index([userId, currentStage])
+}
+
+// ---------------------------
+enum NotificationType {
+  SYSTEM
+  COMMUNITY
+  EVENT
+  DIRECT_MESSAGE
+  FRIEND_REQUEST
+}
+
+model Notification {
+  id          String           @id @default(uuid())
+  recipientId String
+  type        NotificationType @default(SYSTEM)
+  title       String
+  message     String
+  metadata    Json             @default("{}")
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  recipient User @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, isRead])
+  @@index([recipientId, createdAt])
+}
+
+// ── Friendship ────────────────────────────────────────────────────────────────
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
+}
+
+model Friendship {
+  id         String           @id @default(uuid())
+  senderId   String
+  receiverId String
+  status     FriendshipStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  sender   User @relation("friendshipsSent", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("friendshipsReceived", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([status])
+  @@map("friendship")
+}
+
+// Enums
+enum EventType {
+  PUBLIC
+  PRIVATE
+}
+
+enum EventStatus {
+  WAITING
+  SCHEDULED
+  ACTIVE
+  BETWEEN_ROUNDS
+  FINISHED
+}
+
+enum ParticipantStatus {
+  INVITED
+  ACCEPTED
+  PLAYING
+  ABANDONED
+  FINISHED
+}
+
+enum MedalType {
+  GOLD
+  SILVER
+  BRONZE
+}
+
+// Models
+
+enum EventCategory {
+  RANDOM
+  ANIME
+  FUNCTIONS
+  ALGORITHMS
+}
+
+enum EventDifficulty {
+  RANDOM
+  EASY
+  MEDIUM
+  HARD
+  EXTREME
+}
+
+model Event {
+  id                 String          @id @default(uuid())
+  creatorId          String
+  name               String
+  description        String?
+  type               EventType
+  roundsCount        Int             @default(1)
+  currentRound       Int             @default(0)
+  baseXp             Int             @default(0)
+  status             EventStatus     @default(WAITING)
+  category           EventCategory
+  difficulty         EventDifficulty
+  scheduledAt        DateTime?
+  betweenRoundsDelay Int             @default(30)
+  maxParticipants    Int? // só PUBLIC — null = sem limite
+  startedAt          DateTime?
+  finishedAt         DateTime?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime?       @updatedAt
+
+  participants EventParticipant[]
+
+  @@index([type, status])
+  @@index([creatorId])
+}
+
+model EventParticipant {
+  id         String            @id @default(uuid())
+  eventId    String
+  userId     String
+  status     ParticipantStatus @default(INVITED)
+  totalScore Float             @default(0)
+  joinedAt   DateTime          @default(now())
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime?         @updatedAt
+
+  event   Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  results EventRoundResult[]
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+model EventRoundResult {
+  id             String    @id @default(uuid())
+  eventId        String
+  userId         String
+  roundNumber    Int
+  wpm            Float
+  accuracy       Float
+  score          Float
+  completionRate Float
+  errorRate      Float
+  completionTime Int
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime? @updatedAt
+
+  participant EventParticipant @relation(fields: [eventId, userId], references: [eventId, userId], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+// ── Community ─────────────────────────────────────────────────────────────────
+
+enum ChannelType {
+  PUBLIC
+  PRIVATE
+}
+
+enum MemberRole {
+  MASTER_ADMIN
+  GROUP_OWNER
+  GROUP_ADMIN
+  GROUP_MEMBER
+  GROUP_VIEWER
+}
+
+enum MessageType {
+  TEXT
+  SYSTEM
+  NOTIFICATION
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum UserPresenceStatus {
+  ONLINE
+  OFFLINE
+  IDLE
+}
+
+model Channel {
+  id                String      @id @default(uuid())
+  name              String
+  slug              String      @unique
+  description       String?
+  type              ChannelType @default(PUBLIC)
+  isPlatformManaged Boolean     @default(false)
+  createdBy         String
+  isArchived        Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  members      ChannelMember[]
+  messages     Message[]
+  invites      ChannelInvite[]
+  readReceipts CommunityReadReceipt[]
+
+  @@index([type])
+  @@index([isArchived])
+  @@index([createdBy])
+  @@index([slug])
+  @@map("community_channel")
+}
+
+model ChannelMember {
+  id          String     @id @default(uuid())
+  channelId   String
+  userId      String
+  role        MemberRole @default(GROUP_MEMBER)
+  permissions Json       @default("{}")
+  isBanned    Boolean    @default(false)
+  bannedAt    DateTime?
+  joinedAt    DateTime   @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, userId])
+  @@index([channelId])
+  @@index([userId])
+  @@index([role])
+  @@map("community_channel_member")
+}
+
+model Message {
+  id               String      @id @default(uuid())
+  channelId        String?
+  dmConversationId String?
+  authorId         String
+  content          String
+  type             MessageType @default(TEXT)
+  reactions        Json        @default("[]")
+  mentions         String[]    @default([])
+  attachmentIds    String[]    @default([])
+  replyToId        String?
+  edited           Boolean     @default(false)
+  editedAt         DateTime?
+  deletedAt        DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  channel        Channel?        @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  dmConversation DMConversation? @relation(fields: [dmConversationId], references: [id], onDelete: Cascade)
+  author         User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
+  @@index([dmConversationId])
+  @@index([authorId])
+  @@index([createdAt])
+  @@map("community_message")
+}
+
+model DMConversation {
+  id             String    @id @default(uuid())
+  participantAId String
+  participantBId String
+  lastMessageAt  DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  messages     Message[]
+  readReceipts CommunityReadReceipt[]
+
+  @@unique([participantAId, participantBId])
+  @@index([participantAId])
+  @@index([participantBId])
+  @@map("community_dm_conversation")
+}
+
+model ChannelInvite {
+  id            String       @id @default(uuid())
+  channelId     String
+  invitedBy     String
+  invitedUserId String
+  code          String       @unique
+  status        InviteStatus @default(PENDING)
+  expiresAt     DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@index([channelId])
+  @@index([invitedUserId])
+  @@index([code])
+  @@map("community_channel_invite")
+}
+
+model UserPresence {
+  id         String             @id @default(uuid())
+  userId     String             @unique
+  status     UserPresenceStatus @default(OFFLINE)
+  lastSeenAt DateTime           @default(now())
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("community_user_presence")
+}
+
+model CommunityReadReceipt {
+  id                String   @id @default(uuid())
+  userId            String
+  channelId         String?
+  dmConversationId  String?
+  lastReadMessageId String?
+  readAt            DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  channel        Channel?        @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  dmConversation DMConversation? @relation(fields: [dmConversationId], references: [id], onDelete: Cascade)
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, channelId])
+  @@unique([userId, dmConversationId])
+  @@index([userId])
+  @@map("community_read_receipt")
+}

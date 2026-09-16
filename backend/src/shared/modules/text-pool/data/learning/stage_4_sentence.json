@@ -1,0 +1,27 @@
+[
+  {
+    "id": "l4-1",
+    "text": "Modern web development requires deep knowledge",
+    "wordCount": 7
+  },
+  {
+    "id": "l4-2",
+    "text": "The quick brown fox jumps over the lazy dog",
+    "wordCount": 9
+  },
+  {
+    "id": "l4-3",
+    "text": "Consistency is the key to mastering any skill",
+    "wordCount": 8
+  },
+  {
+    "id": "l4-4",
+    "text": "Typing with proper technique saves time and energy",
+    "wordCount": 8
+  },
+  {
+    "id": "l4-5",
+    "text": "Advanced coding involves complex logic and design patterns",
+    "wordCount": 8
+  }
+]

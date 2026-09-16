@@ -1,0 +1,25 @@
+# Dependências (Nunca deves copiar a pasta local)
+node_modules
+npm-debug.log
+
+# Build outputs
+dist
+build
+
+# Variáveis de ambiente sensíveis
+.env
+.env.production
+.env.local
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Outros
+README.md
+.vscode
